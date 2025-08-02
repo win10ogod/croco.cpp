@@ -4216,9 +4216,6 @@ int main(int argc, char ** argv) {
 
             // process prompt
             std::vector<server_tokens> inputs;
-            if (oaicompat && !prompt.is_string()) {
-                throw std::runtime_error("prompt must be a string");
-            }
 
             if (oaicompat && has_mtmd) {
                 // multimodal

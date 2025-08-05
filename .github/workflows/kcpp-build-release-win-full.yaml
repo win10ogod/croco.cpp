@@ -13,7 +13,7 @@ env:
 
 jobs:
   windows:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - name: Clone
         id: checkout
@@ -50,13 +50,13 @@ jobs:
           echo "Number of processors: ${env:NUMBER_OF_PROCESSORS}"
           echo "Processor Architecture: ${env:PROCESSOR_ARCHITECTURE}"
           echo "Computer Name: ${env:COMPUTERNAME}"
-          wmic cpu get name
-          wmic os get TotalVisibleMemorySize, FreePhysicalMemory
+          Get-WmiObject -Class Win32_Processor | Select-Object Name | Format-Table -AutoSize
+          Get-WmiObject -Class Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory | Format-Table -AutoSize
 
       - name: Build Non-CUDA
         id: make_build
         run: |
-          make LLAMA_CLBLAST=1 LLAMA_VULKAN=1 LLAMA_PORTABLE=1 -j ${env:NUMBER_OF_PROCESSORS}
+          make LLAMA_CLBLAST=1 LLAMA_VULKAN=1 LLAMA_PORTABLE=1 CXXFLAGS="-fpermissive" -j ${env:NUMBER_OF_PROCESSORS}
 
       - uses: Jimver/cuda-toolkit@v0.2.20
         id: cuda-toolkit

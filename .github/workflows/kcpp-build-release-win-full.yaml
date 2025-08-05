@@ -56,7 +56,8 @@ jobs:
       - name: Build Non-CUDA
         id: make_build
         run: |
-          make LLAMA_CLBLAST=1 LLAMA_VULKAN=1 LLAMA_PORTABLE=1 CXXFLAGS="-fpermissive" -j ${env:NUMBER_OF_PROCESSORS}
+          $env:CXXFLAGS = "-fpermissive"
+          make LLAMA_CLBLAST=1 LLAMA_VULKAN=1 LLAMA_PORTABLE=1 -j ${env:NUMBER_OF_PROCESSORS}
 
       - uses: Jimver/cuda-toolkit@v0.2.20
         id: cuda-toolkit
